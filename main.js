@@ -17,6 +17,8 @@ let mouseXInfoSpan;
 
 let adjustPoints;
 
+let invertPoints;
+
 let mouseHeld = false;
 let points = [];
 
@@ -122,10 +124,13 @@ savePointsToFile = (fileName) => {
 		''
 	);*/
 
-	let str =
+	let fixedPoints = invertPoints(adjustPoints(points));
+	let str = '#include "../type_declarations.h"\n';
+	str +=
 		`static const Point2D ${fileName}[] = ` +
-		adjustPoints(points).reduce((prev, p) => prev + `{${p.x}, ${p.y}},`, '{');
-	str = str + '};';
+		fixedPoints.reduce((prev, p) => prev + `{${p.x}, ${p.y}},`, '{');
+	str = str + '};\n';
+	str += `static i32 ${fileName}NumPoints = sizeof(${fileName}) / sizeof(Point2D);`
 	console.log('fileStr', str);
 	const blob = new Blob([str], {
 		type: 'text/plain'
@@ -171,6 +176,14 @@ let attachDownloadButton = () => {
 	panelButtonDiv.appendChild(myRowSection);
 	//panelButtonDiv.children[1]
 };
+
+invertPoints = (points) => {
+	return points.map(p => {
+		return {x: p.x, y: -p.y}
+	});
+}
+
+
 
 attachScript();
 setTimeout(() => attachDownloadButton(), 400);
