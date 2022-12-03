@@ -22,6 +22,8 @@ let invertPoints;
 let mouseHeld = false;
 let points = [];
 
+let resetPoints;
+
 attachScript = () => {
 	mouseXInfoSpan = document.getElementById('mouse-x-sidebar');
 	mouseYInfoSpan = document.getElementById('mouse-y-sidebar');
@@ -173,7 +175,18 @@ let attachDownloadButton = () => {
 	});
 	myRowSection.appendChild(downloadButtonDiv);
 
+	// Add reset button
+	const resetRowSection = document.createElement('div');
+	resetRowSection.classList.add('row-section');
+
+	const resetButtonDiv = document.createElement('div');
+	resetButtonDiv.classList.add('defaul-app-button');
+	resetButtonDiv.innerHTML = "Reset points";
+	resetButtonDiv.addEventListener("click", (event) => resetPoints())
+	resetRowSection.appendChild(resetButtonDiv);
+
 	panelButtonDiv.appendChild(myRowSection);
+	panelButtonDiv.appendChild(resetRowSection)
 	//panelButtonDiv.children[1]
 };
 
@@ -183,6 +196,10 @@ invertPoints = (points) => {
 	});
 }
 
+resetPoints = () => {
+	console.log("Resetting points!")
+	points = [];
+}
 
 
 attachScript();
